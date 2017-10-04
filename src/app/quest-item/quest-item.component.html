@@ -1,0 +1,4 @@
+<button type="button" class="list-group-item list-group-item-action" [class.active]="store.state.selectedQuest == id" (click)="store.selectQuest(id)">
+	{{store.state.quests[id].name}} <span class="badge badge-secondary">{{printStatus(store.state.quests[id].status)}}</span>
+	<ngb-progressbar *ngIf="store.state.quests[id].status == 2" style="flex: 1 0 auto;" type="info" [striped]="true" [value]="getProgress()"></ngb-progressbar>
+</button>

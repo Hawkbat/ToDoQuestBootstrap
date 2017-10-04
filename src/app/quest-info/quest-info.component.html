@@ -1,0 +1,57 @@
+<ng-container *ngIf="!store.state.editing">
+	<h1>{{getQuest().name}}</h1>
+	<b>Reward:</b> {{getQuest().exp}} XP<br>
+	<b>Info:</b>
+	<p>{{getQuest().info}}</p>
+	<p></p>
+	<ngb-accordion [closeOthers]="true" activeIds="step-0">
+		<ngb-panel *ngFor="let step of getQuest().steps; let i = index" [id]="'step-' + i" [title]="step.name">
+			<ng-template ngbPanelContent>
+				<p>{{step.info}}</p>
+				<ng-container *ngIf="getQuest().status == 2">
+					<input type="checkbox" [(ngModel)]="getQuest().steps[i].complete"> Completed
+				</ng-container>
+			</ng-template>
+		</ngb-panel>
+	</ngb-accordion>
+	<p><i>{{ getCompletedSteps() }} / {{ getQuest().steps.length }} steps completed</i></p>
+	<button *ngIf="getQuest().status == 2 && getProgress() == 100" class="btn btn-primary" (click)="store.setCurrentQuestStatus(4)">Complete Quest</button>
+	<button *ngIf="getQuest().status == 1" class="btn btn-primary" (click)="store.setCurrentQuestStatus(2)">Accept Quest</button>
+	<button *ngIf="getQuest().status == 1" class="btn btn-secondary" (click)="store.setEditing(true)">Edit Quest</button>
+	<button *ngIf="getQuest().status != 1" class="btn btn-secondary" (click)="store.setCurrentQuestStatus(1)">Cancel Quest</button>
+</ng-container>
+<ng-container *ngIf="store.state.editing">
+	<h1>Editing Quest</h1>
+	<div class="input-group">
+		<span class="input-group-addon">Name</span>
+		<input type="text" class="form-control" [(ngModel)]="getQuest().name">
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Reward</span>
+		<input type="number" min="0" class="form-control" [(ngModel)]="getQuest().exp">
+		<span class="input-group-addon">XP</span>
+	</div>
+	<div class="input-group">
+		<span class="input-group-addon">Info</span>
+		<textarea class="form-control" [(ngModel)]="getQuest().info"></textarea>
+	</div>
+	<p></p>
+	<ng-container *ngFor="let step of getQuest().steps; let i = index">
+		<p></p>
+		<div class="input-group">
+			<span class="input-group-addon">Name</span>
+			<input type="text" class="form-control" [(ngModel)]="step.name">
+			<span class="input-group-addon">Info</span>
+			<input type="text" class="form-control" [(ngModel)]="step.info">
+			<span class="input-group-btn">
+				<button class="btn btn-danger" (click)="store.removeStep(i)">X</button>
+			</span>
+		</div>
+		<p></p>
+	</ng-container>
+	<button class="btn btn-secondary" (click)="store.addNewStep()">Add Step</button>
+	<p></p>
+	<button class="btn btn-primary" (click)="store.applyEdit()">Apply Changes</button>
+	<button class="btn btn-secondary" (click)="store.setEditing(false)">Cancel Changes</button>
+	<button class="btn btn-danger" (click)="store.removeCurrentQuest()">Delete Quest</button>
+</ng-container>

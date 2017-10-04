@@ -1,0 +1,15 @@
+<h1>Quest List</h1>
+<div class="btn-group">
+	<button type="button" class="btn btn-secondary" [class.active]="isFiltered(1)" (click)="store.toggleFilter(1)">Editing</button>
+	<button type="button" class="btn btn-secondary" [class.active]="isFiltered(2)" (click)="store.toggleFilter(2)">In Progress</button>
+	<button type="button" class="btn btn-secondary" [class.active]="isFiltered(4)" (click)="store.toggleFilter(4)">Complete</button>
+</div>
+<p></p>
+<div class="list-group">
+	<ng-container *ngFor="let quest of store.state.quests.slice((page - 1)*pageSize, (page - 1)*pageSize+pageSize); let i = index">
+		<quest-item *ngIf="isFiltered(quest.status)" [id]="i"></quest-item>
+	</ng-container>
+</div>
+<p><i>Displaying quests {{(page - 1) * pageSize + 1}} - {{(page - 1) * pageSize + getDisplayedCount()}} of {{getQuestCount()}} ({{store.state.quests.length}} total)</i></p>
+<ngb-pagination [collectionSize]="getQuestCount()" [(page)]="page" [(pageSize)]="pageSize"></ngb-pagination>
+<button type="button" class="btn btn-primary" (click)="store.addNewQuest()">Create New Quest</button>

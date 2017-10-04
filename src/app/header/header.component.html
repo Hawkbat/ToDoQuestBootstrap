@@ -1,0 +1,10 @@
+<nav class="navbar navbar-expand navbar-light bg-light">
+	<a href="#" class="navbar-brand">To-Do Quest</a>
+	<div class="navbar-nav">
+		<a class="nav-item nav-link">Level</a>
+		<a class="nav-item nav-link">{{store.state.level}}</a>
+		<a class="nav-item nav-link">XP</a>
+		<a class="nav-item nav-link">{{store.state.exp}}</a>
+	</div>
+	<ngb-progressbar class="nav-item" style="flex: 1 0 auto;" type="info" [striped]="true" [value]="store.state.exp"></ngb-progressbar>
+</nav>
